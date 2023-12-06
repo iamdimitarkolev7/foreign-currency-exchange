@@ -13,7 +13,8 @@ export class FxRatesService {
 
   async saveFxRateData(fxRateDto: CreateFxRateDto) {
     
-    return await this.fxRatesRepository.save(fxRateDto);
+    const fxRate = this.fxRatesRepository.create(fxRateDto);
+    return await this.fxRatesRepository.save(fxRate);
   }
 
   async getLatestFxRateData() {
