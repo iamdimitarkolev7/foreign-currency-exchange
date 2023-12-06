@@ -29,7 +29,7 @@ export class FxOrchestratorService {
     this.requestStatsService.saveRequestStats(userId, ip, userAgent);
 
     if (eur_to_usd && usd_to_eur) {
-      return { eur_to_usd, usd_to_eur }
+      return { eur_to_usd, usd_to_eur };
     } else {
 
       if (databaseEmpty) {
