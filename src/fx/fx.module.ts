@@ -9,6 +9,8 @@ import { UtilitiesService } from './utilities/utilities.service';
 import { FxRedisService } from './services/fx-redis.service';
 import { RequestStats } from '../users/entities/request-stats.entity';
 import { UsersModule } from '../users/users.module';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { Redis } from 'ioredis';
 
 @Module({
   providers: [
@@ -16,7 +18,8 @@ import { UsersModule } from '../users/users.module';
     FxRatesService,
     FxClientService,
     UtilitiesService,
-    FxRedisService
+    FxRedisService,
+    Redis
   ],
   exports: [
     FxRatesService,
@@ -29,7 +32,17 @@ import { UsersModule } from '../users/users.module';
   ],
   imports: [
     TypeOrmModule.forFeature([FxRates, RequestStats]),
-    UsersModule
+    UsersModule,
+    ClientsModule.register([
+      {
+        name: 'FX_SERVICE',
+        transport: Transport.REDIS,
+        options: {
+          host: 'localhost',
+          port: 6379
+        }
+      }
+    ])
   ]
 })
 export class FxModule {}

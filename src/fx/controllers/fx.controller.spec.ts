@@ -3,6 +3,7 @@ import { FxOrchestratorService } from '../services/fx-orchestrator.service';
 import { FxController } from './fx.controller';
 import { FxRateDto } from '../dtos/fx-rate.dto';
 import { FxExchangeType } from '../../common/enums/fx-exchange-type.enum';
+import { Redis } from 'ioredis';
 
 describe('Fx Controller', () => {
   
@@ -30,6 +31,7 @@ describe('Fx Controller', () => {
         FxController
       ],
       providers: [
+        Redis,
         {
           provide: FxOrchestratorService,
           useValue: _fxOrchestratorService
