@@ -58,20 +58,19 @@ describe('Fx Rates Service', () => {
 
   it('should get the latest fx rate data', async () => {
 
-    // TODO...
-    // const createQueryBuilder: any = {
-    //   select: () => createQueryBuilder,
-    //   orderBy: () => createQueryBuilder,
-    //   limit: () => createQueryBuilder,
-    //   getRawData: () => jest.fn().mockImplementationOnce((x) => x.id === 1)
-    // }
+    const createQueryBuilder: any = {
+      select: () => createQueryBuilder,
+      orderBy: () => createQueryBuilder,
+      limit: () => createQueryBuilder,
+      getRawOne: () => ({ usd_to_eur: 1.2, eur_to_usd: 0.8 })
+    }
 
-    // jest.spyOn(fxRatesRepository, 'createQueryBuilder').mockReturnValue(createQueryBuilder);
+    jest.spyOn(fxRatesRepository, 'createQueryBuilder').mockReturnValue(createQueryBuilder);
 
-    // const result = await fxRatesService.getLatestFxRateData();
+    const result = await fxRatesService.getLatestFxRateData();
 
-    // expect(fxRatesRepository.createQueryBuilder).toHaveBeenCalledWith('fx_rates');
-    // expect(result).toEqual(fxRateMock);
+    expect(fxRatesRepository.createQueryBuilder).toHaveBeenCalledWith('fx_rates');
+    expect(result).toEqual(expect.objectContaining({ usd_to_eur: expect.any(Number), eur_to_usd: expect.any(Number) }));
   });
 
   it('should return true if the database is empty', async () => {
