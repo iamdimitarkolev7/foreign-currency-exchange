@@ -6,6 +6,7 @@ import { UtilitiesService } from '../utilities/utilities.service';
 import { FxRedisService } from './fx-redis.service';
 import { FxRatesResponseObjectType } from '../../common/types/fx-rates-response-object.type';
 import { RequestStatsService } from '../../users/services/request-stats.service';
+import { FxExchangeType } from '../../common/enums/fx-exchange-type.enum';
 
 @Injectable()
 export class FxOrchestratorService {
@@ -18,7 +19,7 @@ export class FxOrchestratorService {
     private requestStatsService: RequestStatsService
   ) {}
 
-  async getFxRatesData(@Req() request: Request) {
+  async getFxRatesData(@Req() request: Request, type: FxExchangeType = FxExchangeType.DEFAULT) {
 
     const ip = request.ip;
     const userId = request.session.userId;
@@ -34,7 +35,7 @@ export class FxOrchestratorService {
 
       if (databaseEmpty) {
 
-        const requestUrl = this.utilitiesService.generateUrl();
+        const requestUrl = this.utilitiesService.generateUrl(type);
         const fxRatesData = await this.fxClientService.getData(requestUrl);
         const fxRatesDto = this.utilitiesService.fxDataToDto(fxRatesData);
         const responseData: FxRatesResponseObjectType = await this.fxRatesService.saveFxRateData(fxRatesDto);

@@ -4,6 +4,7 @@ import { FxOrchestratorService } from '../services/fx-orchestrator.service';
 import { AuthGuard } from '../../common/guards/auth.guard';
 import { Serialize } from '../../common/interceptors/serialize.interceptor';
 import { FxRateDto } from '../dtos/fx-rate.dto';
+import { FxExchangeType } from '../../common/enums/fx-exchange-type.enum';
 
 @Controller('fx')
 @Serialize(FxRateDto)
@@ -15,8 +16,8 @@ export class FxController {
 
   @Get()
   @UseGuards(AuthGuard)
-  async getFXData(@Query('type') type: string, @Req() request: Request) {
+  async getFXData(@Query('type') type: FxExchangeType = FxExchangeType.DEFAULT, @Req() request: Request) {
 
-    return this.fxOrchestratorService.getFxRatesData(request);
+    return this.fxOrchestratorService.getFxRatesData(request, type);
   }
 }
